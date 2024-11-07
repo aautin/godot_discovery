@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://wlhyuiyslnxu"]
+[gd_scene load_steps=8 format=3 uid="uid://wlhyuiyslnxu"]
 
+[ext_resource type="Script" path="res://map.gd" id="1_5a8c0"]
 [ext_resource type="Script" path="res://character_body_3d.gd" id="1_vwyw4"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_pbqjh"]
@@ -14,6 +15,7 @@ size = Vector3(2, 0.001, 2)
 [sub_resource type="SphereShape3D" id="SphereShape3D_4kaqc"]
 
 [node name="Map" type="Node3D"]
+script = ExtResource("1_5a8c0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, 0, 0, 0)
