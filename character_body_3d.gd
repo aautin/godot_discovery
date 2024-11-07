@@ -19,7 +19,7 @@ func _physics_process(delta: float) -> void:
 
 	# Current and destination angles
 	var origin := rad_to_deg(self.rotation.y)
-	var destination := rad_to_deg(atan2(input_dir.y, input_dir.x))
+	var destination := rad_to_deg(atan2(input_dir.y, -input_dir.x))
 	if destination < 0:
 		destination += 360
 
@@ -34,11 +34,11 @@ func _physics_process(delta: float) -> void:
 			self.rotation.y += ROTATION_SPEED * delta  # Rotate to the right
 		else:
 			self.rotation.y -= ROTATION_SPEED * delta  # Rotate to the left
-
-	# Update movement direction
-	var direction := (Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		self.position.x += direction.x * SPEED
-		self.position.z += direction.z * SPEED
+	else:
+		# Update movement direction
+		var direction := (Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			self.position.x += direction.x * SPEED
+			self.position.z += direction.z * SPEED
 
 	move_and_slide()
