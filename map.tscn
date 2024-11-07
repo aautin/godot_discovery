@@ -10,9 +10,9 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_tvuia"]
 size = Vector3(2, 0.001, 2)
 
-[sub_resource type="SphereMesh" id="SphereMesh_qxt5s"]
+[sub_resource type="BoxMesh" id="BoxMesh_bw7dm"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_4kaqc"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ulisi"]
 
 [node name="Map" type="Node3D"]
 script = ExtResource("1_5a8c0")
@@ -41,7 +41,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00421047, 3.52172, -0.0002
 script = ExtResource("1_vwyw4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-mesh = SubResource("SphereMesh_qxt5s")
+mesh = SubResource("BoxMesh_bw7dm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-shape = SubResource("SphereShape3D_4kaqc")
+shape = SubResource("BoxShape3D_ulisi")
