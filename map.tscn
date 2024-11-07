@@ -1,24 +1,45 @@
-[gd_scene load_steps=3 format=3 uid="uid://wlhyuiyslnxu"]
+[gd_scene load_steps=7 format=3 uid="uid://wlhyuiyslnxu"]
+
+[ext_resource type="Script" path="res://character_body_3d.gd" id="1_vwyw4"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_pbqjh"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_76uua"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tvuia"]
+size = Vector3(2, 0.001, 2)
+
 [sub_resource type="SphereMesh" id="SphereMesh_qxt5s"]
 
-[node name="Map" type="Node3D"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_4kaqc"]
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.845951, 0.53326, 0, -0.53326, 0.845951, 0, 2.60037, 5.22097)
+[node name="Map" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("PlaneMesh_pbqjh")
 skeleton = NodePath("../Camera3D")
 
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+physics_material_override = SubResource("PhysicsMaterial_76uua")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_tvuia")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.973802, 0.227399, 0, -0.227399, 0.973802, 0, 1.90681, 5.08595)
+
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 3.57155, 3.30351)
+shadow_enabled = true
 spot_range = 10.0
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00421047, 3.52172, -0.000240088)
+script = ExtResource("1_vwyw4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
 mesh = SubResource("SphereMesh_qxt5s")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("SphereShape3D_4kaqc")
