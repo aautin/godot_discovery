@@ -3,9 +3,9 @@ extends CharacterBody3D
 func is_between(value: int, min: int, max: int) -> bool:
 	return value >= min and value <= max
 
-const SPEED = 0.05
-const JUMP_VELOCITY = 4.5
-const ROTATION_SPEED = 5.0  # Adjust rotation speed as needed
+const SPEED = 0.10
+const JUMP_VELOCITY = 6
+const ROTATION_SPEED = 10.0  # Adjust rotation speed as needed
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():

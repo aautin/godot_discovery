@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://map.gd" id="1_5a8c0"]
 [ext_resource type="Script" path="res://character_body_3d.gd" id="1_vwyw4"]
+[ext_resource type="PackedScene" uid="uid://dt7ghr0toji8q" path="res://assets/characters/gltf/Barbarian.glb" id="3_60ptf"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_pbqjh"]
 
@@ -10,9 +11,8 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_tvuia"]
 size = Vector3(2, 0.001, 2)
 
-[sub_resource type="BoxMesh" id="BoxMesh_bw7dm"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_ulisi"]
+size = Vector3(0.850708, 0.94104, 1.81221)
 
 [node name="Map" type="Node3D"]
 script = ExtResource("1_5a8c0")
@@ -37,11 +37,12 @@ shadow_enabled = true
 spot_range = 10.0
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00421047, 3.52172, -0.000240088)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("1_vwyw4")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
-mesh = SubResource("BoxMesh_bw7dm")
+[node name="Barbarian" parent="CharacterBody3D" instance=ExtResource("3_60ptf")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.24922, -0.926047, 0.0256277)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+transform = Transform3D(-1.5271e-07, 0, -0.995225, 0, 2.52217, 0, 3.49361, 0, -4.35027e-08, -0.126851, 0.264176, 0.000239566)
 shape = SubResource("BoxShape3D_ulisi")
