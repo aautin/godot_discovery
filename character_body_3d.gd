@@ -1,8 +1,9 @@
 extends CharacterBody3D
 
-const JUMP_VELOCITY = 10
+const CUSTOM_GRAVITY = -40.0
+const JUMP_VELOCITY = 20
 const MOVE_SCALE = 10
-const MOVE_SPEED = 20
+const MOVE_SPEED = 15
 const ROTATION_SCALE = 90
 const ROTATION_SPEED = 50
 
@@ -66,30 +67,40 @@ func move(delta: float) -> bool:
 func must_rotate(input_dir : Vector2) -> bool:
 	return false
 
+func set_move(input_dir: Vector2) -> void:
+	if input_dir.x:
+		remaining_move.x = input_dir.x * MOVE_SCALE
+	if input_dir.y:
+		remaining_move.y = input_dir.y * MOVE_SCALE
+	anim_player.play("Walking_B")
+	is_moving = true
+	move_normed = remaining_move.normalized()
+
 func _physics_process(delta: float) -> void:
 	# Gravity
 	if not is_on_floor():
-		anim_player.stop()
-		velocity += get_gravity() * delta
+		velocity.y += CUSTOM_GRAVITY * delta
 
 	# Jump
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and is_moving == false:
 		velocity.y = JUMP_VELOCITY
+		anim_player.play("Jump_Start")
+		print(1)
+
+	# Landing
+	if velocity.y < 0 && self.position.y > 0 && self.position.y < 8:
+		anim_player.play("Jump_Land")
+		print(2)
 
 	# Move
-	var MOVE_DONE : bool = false
-	if is_moving:
-		MOVE_DONE = move(delta)
-	elif not is_rotating || MOVE_DONE == true:
-		var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		if input_dir && not must_rotate(input_dir):
-			if input_dir.x:
-				remaining_move.x = input_dir.x * MOVE_SCALE
-			if input_dir.y:
-				remaining_move.y = input_dir.y * MOVE_SCALE
-			anim_player.play("Walking_B")
-			is_moving = true
-			move_normed = remaining_move.normalized()
-			move(delta)
+	if is_on_floor():
+		var MOVE_DONE : bool = false
+		if is_moving:
+			MOVE_DONE = move(delta)
+		elif not is_rotating || MOVE_DONE == true:
+			var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+			if input_dir && not must_rotate(input_dir):
+				set_move(input_dir)
+				move(delta)
 
 	move_and_slide()
