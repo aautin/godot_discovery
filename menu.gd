@@ -17,8 +17,7 @@ func center() -> void:
 	if camera:
 		camera.position = Vector2(win_size.x / 2, win_size.y / 2)
 	if buttons:
-		buttons.position = Vector2((win_size.x - buttons.size.x) / 2,
-								   (win_size.y - buttons.size.y) / 2)
+		buttons.position = Vector2((win_size.x - buttons.size.x) / 2, (win_size.y - buttons.size.y) / 2)
 
 func _ready() -> void:
 	center()
