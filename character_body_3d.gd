@@ -1,24 +1,75 @@
 extends CharacterBody3D
 
-func is_between(value: int, min: int, max: int) -> bool:
-	return value >= min and value <= max
+const JUMP_VELOCITY = 10
+const MOVE_SCALE = 10
+const MOVE_SPEED = 20
+const ROTATION_SCALE = 90
+const ROTATION_SPEED = 50
 
-const JUMP_VELOCITY = 6
-
-const MOVE_SCALE = 100
-const MOVE_SPEED = 5
-var remaining_move : Array[float]
+var remaining_move : Vector2
+var move_normed : Vector2
 var is_moving : bool = false
 
-const ROTATION_SCALE = 90
-const ROTATION_SPEED = 5
 var remaining_rotation : float
 var is_rotating : bool = false
 
+var anim_player
+
+func _ready():
+	# Get the AnimationPlayer node when the scene starts
+	anim_player = $Barbarian/Animations
+
+func move(delta: float) -> bool:
+	# x-axis : negative way
+	if remaining_move.x < 0:
+		if remaining_move.x < move_normed.x * MOVE_SPEED * delta:
+			self.position.x += move_normed.x * MOVE_SPEED * delta
+			remaining_move.x -= move_normed.x * MOVE_SPEED * delta
+		else:
+			self.position.x += remaining_move.x
+			remaining_move.x = 0
+	# x-axis : positive way
+	if remaining_move.x > 0:
+		if remaining_move.x > move_normed.x * MOVE_SPEED * delta:
+			self.position.x += move_normed.x * MOVE_SPEED * delta
+			remaining_move.x -= move_normed.x * MOVE_SPEED * delta
+		else:
+			self.position.x += remaining_move.x
+			remaining_move.x = 0
+
+	# z-axis : negative way
+	if remaining_move.y < 0:
+		if remaining_move.y < move_normed.y * MOVE_SPEED * delta:
+			self.position.z += move_normed.y * MOVE_SPEED * delta
+			remaining_move.y -= move_normed.y * MOVE_SPEED * delta
+		else:
+			self.position.z += remaining_move.y
+			remaining_move.y = 0
+	# z-axis : positive way
+	if remaining_move.y > 0:
+		if remaining_move.y > move_normed.y * MOVE_SPEED * delta:
+			self.position.z += move_normed.y * MOVE_SPEED * delta
+			remaining_move.y -= move_normed.y * MOVE_SPEED * delta
+		else:
+			self.position.z += remaining_move.y
+			remaining_move.y = 0
+
+	# Still a remaining_move to do ?
+	if remaining_move[0] == 0 && remaining_move[1] == 0:
+		is_moving = false
+		remaining_move.x = 0
+		remaining_move.y = 0
+		anim_player.stop()
+		return true
+	return false
+
+func must_rotate(input_dir : Vector2) -> bool:
+	return false
 
 func _physics_process(delta: float) -> void:
 	# Gravity
 	if not is_on_floor():
+		anim_player.stop()
 		velocity += get_gravity() * delta
 
 	# Jump
@@ -26,22 +77,19 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 
 	# Move
+	var MOVE_DONE : bool = false
 	if is_moving:
-		if remaining_move[0] < MOVE_SPEED * delta:
-			
-		self.position.x += MOVE_SPEED * delta
-		self.position.z += MOVE_SPEED * delta
-		remaining_move[0] -= MOVE_SPEED * delta
-		remaining_move[1] -= MOVE_SPEED * delta
-	elif is_rotating:
-		self.rotation.y += remaining_rotation * ROTATION_SPEED * delta
-		remaining_rotation -= remaining_rotation * ROTATION_SPEED * delta
+		MOVE_DONE = move(delta)
+	elif not is_rotating || MOVE_DONE == true:
+		var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		if input_dir && not must_rotate(input_dir):
+			if input_dir.x:
+				remaining_move.x = input_dir.x * MOVE_SCALE
+			if input_dir.y:
+				remaining_move.y = input_dir.y * MOVE_SCALE
+			anim_player.play("Walking_B")
+			is_moving = true
+			move_normed = remaining_move.normalized()
+			move(delta)
 
-	var direction := (Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		self.position.x += direction.x * SPEED
-		self.position.z += direction.z * SPEED
-
-	# Direction inputs
-	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	move_and_slide()
