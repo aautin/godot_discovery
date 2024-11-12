@@ -82,15 +82,13 @@ func _physics_process(delta: float) -> void:
 		velocity.y += CUSTOM_GRAVITY * delta
 
 	# Jump
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and is_moving == false:
+	if Input.is_action_just_pressed("ui_space") and is_on_floor() and is_moving == false:
 		velocity.y = JUMP_VELOCITY
 		anim_player.play("Jump_Start")
-		print(1)
 
 	# Landing
 	if velocity.y < 0 && self.position.y > 0 && self.position.y < 8:
 		anim_player.play("Jump_Land")
-		print(2)
 
 	# Move
 	if is_on_floor():
