@@ -1,11 +1,21 @@
 extends Node3D
 
+@onready var camera = $Camera3D
+@onready var player = $Player
+@onready var state = $State
 
-# Called when the node enters the scene tree for the first time.
+var map_state : Array
+
+func center_camera_on_player() -> void:
+	camera.position = Vector3(player.position.x, player.position.y + 20, player.position.z + 25)
+
 func _ready() -> void:
-	pass # Replace with function body.
+	var map_state_file = "res://map_state.txt"
+	var map_state = state.read_file_to_int_array(map_state_file)
+	print(map_state)  # This will print the 2D array of integers
+	center_camera_on_player()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_back_to_menu"):
 		get_tree().change_scene_to_file("res://menu.tscn")
+	center_camera_on_player()
