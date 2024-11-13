@@ -6,7 +6,7 @@ const JUMP_VELOCITY = 20
 const MOVE_SCALE = 10
 const MOVE_SPEED = 10
 
-const ROTATION_SPEED = 4
+const ROTATION_SPEED = 5
 const ROTATION_THRESHOLD = 0.1
 
 var remaining_move : Vector2
@@ -135,7 +135,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y += CUSTOM_GRAVITY * delta
 	
 	# Jump
-	if Input.is_action_just_pressed("ui_space") and is_on_floor() and is_moving == false:
+	if Input.is_action_just_pressed("ui_space") and is_on_floor() and is_moving == false and is_rotating == false:
 		velocity.y = JUMP_VELOCITY
 		anim_player.play("Jump_Start")
 	
