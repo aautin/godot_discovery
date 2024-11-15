@@ -6,7 +6,7 @@ const JUMP_VELOCITY = 20
 const MOVE_SCALE = 10
 const MOVE_SPEED = 10
 
-const ROTATION_SPEED = 5
+const ROTATION_SPEED = 6
 const ROTATION_THRESHOLD = 0.1
 
 var remaining_move : Vector2
@@ -61,6 +61,8 @@ func move_player(delta: float) -> bool:
 		else:
 			self.position.z += remaining_move.y
 			remaining_move.y = 0
+	
+	get_parent().center_camera_on_player()
 	
 	if remaining_move.x == 0 && remaining_move.y == 0:
 		is_moving = false

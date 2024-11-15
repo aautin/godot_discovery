@@ -18,4 +18,3 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if Input.is_action_just_pressed("ui_back_to_menu"):
 		get_tree().change_scene_to_file("res://menu.tscn")
-	center_camera_on_player()
