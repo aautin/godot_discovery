@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dou8553luv0fy"]
+
+[ext_resource type="PackedScene" uid="uid://bsnpmlh8pthqh" path="res://assets/scenery/floor/floor_dirt.gltf" id="1_bccgc"]
+
+[node name="Floor" type="Node3D"]
+
+[node name="floor_dirt2" parent="." instance=ExtResource("1_bccgc")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 4, 0, 4)
